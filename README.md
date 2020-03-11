@@ -7,3 +7,5 @@ yarn eslint --fix {diretório} --ext .js
 ## Desfazer migration
 
 yarn sequelize db:migrate:undo || yarn sequelize db:migrate:undo:all
+
+## Where I Stop: Lesson 10
