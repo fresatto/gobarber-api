@@ -8,4 +8,4 @@ yarn eslint --fix {diretório} --ext .js
 
 yarn sequelize db:migrate:undo || yarn sequelize db:migrate:undo:all
 
-## Where I Stop: Lesson 10
+## Where I Stop: Lesson 2.6
