@@ -1,10 +1,18 @@
 import Appointment from '../models/Appointment';
 import User from '../models/User';
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
+import {
+  startOfHour,
+  parseISO,
+  isBefore,
+  format,
+  subHours,
+  isPast,
+} from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import File from '../models/File';
 import Notification from '../schemas/Notification';
+import Mail from '../../lib/Mail';
 
 class AppointmentController {
   async index(req, res) {
@@ -112,11 +120,26 @@ class AppointmentController {
 
   async delete(req, res) {
     // Verifica se o usuario logado é o dono do agendamento
-    const appointment = await Appointment.findByPk(req.params.id);
+    const appointment = await Appointment.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'provider',
+          attributes: ['name', 'email'],
+        },
+      ],
+    });
 
     if (req.userId !== appointment.user_id) {
       return res.status(401).json({
         error: "You don't have permission to cancel this appointment",
+      });
+    }
+
+    // Verifica se a data ja passou
+    if (isPast(appointment.date)) {
+      return res.status(401).json({
+        error: 'Date has passed',
       });
     }
 
@@ -132,6 +155,13 @@ class AppointmentController {
     appointment.canceled_at = new Date();
 
     await appointment.save();
+
+    // Envia o e-mail pro peão
+    await Mail.sendEmail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      subject: 'Agendamento cancelado',
+      text: 'Você tem um novo cancelamento',
+    });
 
     return res.json(appointment);
   }
