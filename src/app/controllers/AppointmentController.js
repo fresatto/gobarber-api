@@ -1,5 +1,3 @@
-import Appointment from '../models/Appointment';
-import User from '../models/User';
 import * as Yup from 'yup';
 import {
   startOfHour,
@@ -10,6 +8,8 @@ import {
   isPast,
 } from 'date-fns';
 import pt from 'date-fns/locale/pt';
+import User from '../models/User';
+import Appointment from '../models/Appointment';
 import File from '../models/File';
 import Notification from '../schemas/Notification';
 import Mail from '../../lib/Mail';
@@ -56,7 +56,7 @@ class AppointmentController {
     const { provider_id, date } = req.body;
 
     // Usuário não pode marcar com ele mesmo
-    if (req.body.provider_id == req.userId) {
+    if (req.body.provider_id === req.userId) {
       return res.status(401).json({
         error: "You can't set a appointment with yourself.",
       });
