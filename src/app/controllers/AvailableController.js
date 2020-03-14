@@ -7,8 +7,6 @@ import {
   setHours,
   setMinutes,
   setSeconds,
-  isEqual,
-  parseISO,
 } from 'date-fns';
 
 import Appointment from '../models/Appointment';
