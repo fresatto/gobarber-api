@@ -1,3 +1,10 @@
+## run app
+
+yarn dev - roda o projeto
+yarn queue - roda a fila
+
+(Verificar se as imagens do docker estão rodando: database, mongobarber, redisbarber)
+
 ## Verificar se o container do docker está rodando
 
 ## Executa o eslint em todos os arquivos do diretório
