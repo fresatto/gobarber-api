@@ -36,9 +36,11 @@ class AppointmentController {
           ],
         },
       ],
+      attributes: ['id', 'past', 'date', 'cancelable', 'canceled_at'],
       limit: 20,
       offset: (page - 1) * 20,
     });
+
     return res.json(appointments);
   }
 
@@ -80,11 +82,11 @@ class AppointmentController {
     // Verifica datas passadas
     const hourStart = startOfHour(parseISO(date));
 
-    if (isBefore(hourStart, new Date())) {
-      return res.status(401).json({
-        error: 'Past dates are not permitted',
-      });
-    }
+    // if (isBefore(hourStart, new Date())) {
+    //   return res.status(401).json({
+    //     error: 'Past dates are not permitted',
+    //   });
+    // }
 
     // Verifica disponibilidade do provider
     const notAvailable = await Appointment.findOne({
