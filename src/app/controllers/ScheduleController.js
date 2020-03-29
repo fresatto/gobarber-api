@@ -38,15 +38,9 @@ class ScheduleController {
           model: User,
           as: 'user',
           attributes: ['id', 'name', 'email', 'provider'],
-          include: [
-            {
-              model: File,
-              as: 'avatar',
-              attributes: ['path', 'url'],
-            },
-          ],
         },
       ],
+      order: ['date'],
     });
 
     return res.json(appointments);
